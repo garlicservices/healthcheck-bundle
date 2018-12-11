@@ -1,0 +1,12 @@
+services:
+
+    app.servicediscovery.processor:
+        class: Garlic\HealthCheck\Service\Processor\ServiceDiscoveryProcessor
+        public: true
+        arguments:
+            - "@service.request"
+            - "@service.response"
+            - "@router"
+            - "@kernel"
+        tags:
+            - { name: 'enqueue.client.processor', topicName: 'serviceDiscovery'}

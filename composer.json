@@ -1,0 +1,25 @@
+{
+  "name": "garlic/healthcheck",
+  "description": "Health check Bundle used for graphQL schema introspection and whole schema merge at gateway",
+  "keywords": ["Microservices healthcheck", "Health check", "Microservices"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Mykyta Halaiev",
+      "email": "galaevnik@gmail.com"
+    }
+  ],
+  "type": "symfony-bundle",
+  "autoload": {
+    "psr-4": {
+      "Garlic\\HealthCheck\\": ""
+    }
+  },
+  "require": {
+    "php": ">=7.1",
+    "garlic/bus": "^1.0",
+    "garlic/graphql": "^1.0",
+    "dflydev/dot-access-data": "^2.0",
+    "ext-json": "*"
+  }
+}
