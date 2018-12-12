@@ -1,4 +1,8 @@
 services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
 
     app.servicediscovery.processor:
         class: Garlic\HealthCheck\Service\Processor\ServiceDiscoveryProcessor
