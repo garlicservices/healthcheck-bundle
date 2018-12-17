@@ -33,7 +33,7 @@ class ServiceDiscoveryProcessor extends ProcessorConfigAbstract implements PsrPr
         $container->get(CommunicatorService::class)
             ->command('gateway')
             ->post()
-            ->serviceRebuildSchema(['data' => $response->getContent(), 'name' => getenv('SERVICE_NAME')]);
+            ->serviceRebuildSchema([], ['data' => $response->getContent(), 'name' => getenv('SERVICE_NAME')]);
 
         return self::ACK;
     }
