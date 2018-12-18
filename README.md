@@ -27,6 +27,9 @@ Data structure could be obtained at [introspection.json](https://github.com/garl
 ### How to init event
 
 ```bash
-$this->get(CommunicatorService::class)
-           ->event('serviceDiscovery', ['some' => 'payload']);
+$container->get(CommunicatorService::class)
+    ->serviceDiscoveryEvent(['date' => microtime(true)]);
 ```
+
+#### Response
+[Data structure](https://github.com/garlicservices/healthcheck-bundle/blob/master/Service/Processor/ServiceDiscoveryProcessor.php#L40) to work with

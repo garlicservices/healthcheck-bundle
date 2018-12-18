@@ -25,15 +25,22 @@ class ServiceDiscoveryProcessor extends ProcessorConfigAbstract implements PsrPr
      */
     public function process(PsrMessage $message, PsrContext $context)
     {
+        $payload = \json_decode($message->getBody());
+        $emitTime = $payload->path->date;
+
         $container = $this->kernel->getContainer();
 
         $response = $container->get('http_kernel')
             ->handle(Request::create('/graphql', 'POST', ['query' => $this->getIntrospectionQuery()]), HttpKernelInterface::MASTER_REQUEST);
-        
+
         $container->get(CommunicatorService::class)
             ->command('gateway')
             ->post()
-            ->serviceRebuildSchema([], ['data' => $response->getContent(), 'name' => getenv('SERVICE_NAME')]);
+            ->serviceRebuildSchema([], [
+                'data' => $response->getContent(),
+                'name' => getenv('SERVICE_NAME'),
+                'timing' => $emitTime ? microtime(true) - $emitTime : 0
+            ]);
 
         return self::ACK;
     }
