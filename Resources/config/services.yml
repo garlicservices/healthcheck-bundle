@@ -14,3 +14,11 @@ services:
             - "@kernel"
         tags:
             - { name: 'enqueue.client.processor', topicName: 'serviceDiscovery'}
+
+    app.servicediscovery.init:
+        class: Garlic\HealthCheck\Command\HealthCheckCommand
+        arguments:
+            - "healthcheck:init"
+            - "@kernel"
+        tags:
+            - { name: 'console.command', command: 'healthcheck:init'}
