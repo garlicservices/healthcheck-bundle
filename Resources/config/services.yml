@@ -20,5 +20,16 @@ services:
         arguments:
             - "healthcheck:init"
             - "@kernel"
+            - "@lock.service"
         tags:
             - { name: 'console.command', command: 'healthcheck:init'}
+
+    lock.service:
+        class: Garlic\HealthCheck\Service\Lock\LockService
+        public: true
+        arguments:
+            - "%env(MYSQL_HOST)%"
+            - "%env(MYSQL_PORT)%"
+            - "%env(MYSQL_DATABASE)%"
+            - "%env(MYSQL_USER)%"
+            - "%env(MYSQL_PASSWORD)%"

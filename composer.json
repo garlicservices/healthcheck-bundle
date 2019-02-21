@@ -19,6 +19,7 @@
     "php": ">=7.1",
     "garlic/bus": "^1.0",
     "garlic/graphql": "^1.0",
+    "symfony/lock": "^4.2",
     "ext-json": "*"
   }
 }

@@ -3,6 +3,7 @@
 namespace Garlic\HealthCheck\Command;
 
 use Garlic\Bus\Service\CommunicatorService;
+use Garlic\HealthCheck\Service\Lock\LockService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,17 +18,22 @@ class HealthCheckCommand extends Command
 {
     protected static $defaultName = 'healthcheck:init';
 
+    protected $lockTime = 30;
+
     /** @var Kernel $kernel */
     protected $kernel;
+    /** @var LockService $lockService */
+    protected $lockService;
 
     /**
      * HealthCheckCommand constructor.
      * @param string|null $name
      * @param Kernel $kernel
      */
-    public function __construct(?string $name = null, Kernel $kernel)
+    public function __construct(?string $name = null, Kernel $kernel, LockService $lockService)
     {
         $this->kernel = $kernel;
+        $this->lockService = $lockService->getLockFactory();
 
         parent::__construct($name);
     }
@@ -47,6 +53,13 @@ class HealthCheckCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
+
+        $io->success('Healthcheck init started.');
+        $lock = $this->lockService->createLock(getenv('SERVICE_NAME') . '-healthcheck-lock', $this->lockTime, false);
+        if (!$lock->acquire()) {
+            $io->error('Process is locked by another daemon. Shutting down.');
+            return;
+        }
 
         $container = $this->kernel->getContainer();
 

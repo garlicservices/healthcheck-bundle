@@ -22,10 +22,17 @@ Just a one thing are necessary for this bundle works.
 composer require garlic/healthcheck
 ```
 
-####
+#### bundles.php
 canfig/bundles.php - add bundle initialisation
 ```bash
 Garlic\HealthCheck\HealthCheckBundle::class => ['all' => true],
+```
+
+#### Lock table initialisation
+
+```bash
+php bin/console doctrine:migrations:diff
+php bin/console doctrine:migrations:migrate --no-interaction
 ```
 
 ## Usage
@@ -34,11 +41,16 @@ Service automatically begin to listen enqueue events with name ```serviceDiscove
 
 Data structure could be obtained at [introspection.json](https://github.com/garlicservices/healthcheck-bundle/tree/master/Resources/query/introspection.json)
 
-### How to init event
+### How to init event from outside
 
 ```bash
 $container->get(CommunicatorService::class)
     ->serviceDiscoveryEvent(['date' => microtime(true)]);
+```
+
+### How to send self-introspection manually
+```bash
+sf healthcheck:init
 ```
 
 #### Response
