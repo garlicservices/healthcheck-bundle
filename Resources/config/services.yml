@@ -15,6 +15,12 @@ services:
         tags:
             - { name: 'enqueue.client.processor', topicName: 'serviceDiscovery'}
 
+    Garlic\Bus\Service\File\FileHandlerService:
+        public: true
+        arguments:
+            - "%env(HOST_URL)%"
+            - "%env(UPLOAD_DIR)%"
+            -
     app.servicediscovery.init:
         class: Garlic\HealthCheck\Command\HealthCheckCommand
         arguments:
