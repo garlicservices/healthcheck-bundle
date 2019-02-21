@@ -18,7 +18,8 @@ class HealthCheckCommand extends Command
 {
     protected static $defaultName = 'healthcheck:init';
 
-    protected $lockTime = 30;
+    /** @var int Time until next run would be possible  */
+    protected $lockTime;
 
     /** @var Kernel $kernel */
     protected $kernel;
@@ -34,6 +35,8 @@ class HealthCheckCommand extends Command
     {
         $this->kernel = $kernel;
         $this->lockService = $lockService->getLockFactory();
+
+        $this->lockTime = getenv('HEALTHCHECK_LOCK_TTL') ?? 30;
 
         parent::__construct($name);
     }

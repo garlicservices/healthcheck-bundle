@@ -23,9 +23,17 @@ composer require garlic/healthcheck
 ```
 
 #### bundles.php
-canfig/bundles.php - add bundle initialisation
+config/bundles.php - add bundle initialisation
 ```bash
 Garlic\HealthCheck\HealthCheckBundle::class => ['all' => true],
+```
+
+#### redis config
+Add to your .env file next configuration values
+```bash
+REDIS_HOST=localhost
+REDIS_PORT=6379
+HEALTHCHECK_LOCK_TTL=30 - not nessessary, time in seconds until next run would be possible. Default is 30 sec
 ```
 
 ## Usage
