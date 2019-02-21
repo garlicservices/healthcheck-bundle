@@ -28,13 +28,6 @@ canfig/bundles.php - add bundle initialisation
 Garlic\HealthCheck\HealthCheckBundle::class => ['all' => true],
 ```
 
-#### Lock table initialisation
-
-```bash
-php bin/console doctrine:migrations:diff
-php bin/console doctrine:migrations:migrate --no-interaction
-```
-
 ## Usage
 
 Service automatically begin to listen enqueue events with name ```serviceDiscovery``` and generate proper ```COMMAND``` for gaeway to rebuild actual whole schema introspection with new obtained data.
@@ -54,4 +47,4 @@ sf healthcheck:init
 ```
 
 #### Response
-[Data structure](https://github.com/garlicservices/healthcheck-bundle/blob/master/Service/Processor/ServiceDiscoveryProcessor.php#L40) to work with
+[Data structure](https://github.com/garlicservices/healthcheck-bundle/blob/master/Service/Processor/ServiceDiscoveryProcessor.php#L39) to work with

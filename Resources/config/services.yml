@@ -28,8 +28,5 @@ services:
         class: Garlic\HealthCheck\Service\Lock\LockService
         public: true
         arguments:
-            - "%env(MYSQL_HOST)%"
-            - "%env(MYSQL_PORT)%"
-            - "%env(MYSQL_DATABASE)%"
-            - "%env(MYSQL_USER)%"
-            - "%env(MYSQL_PASSWORD)%"
+            - "%env(REDIS_HOST)%"
+            - "%env(REDIS_PORT)%"

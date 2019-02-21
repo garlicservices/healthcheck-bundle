@@ -2,39 +2,32 @@
 
 namespace Garlic\HealthCheck\Service\Lock;
 
-use Predis\Client;
 use Symfony\Component\Cache\Traits\RedisTrait;
 use Symfony\Component\Lock\Factory;
-use Symfony\Component\Lock\Store\PdoStore;
 use Symfony\Component\Lock\Store\RedisStore;
 
 class LockService
 {
-    /** @var PdoStore $store */
+    use RedisTrait;
+
+    /** @var RedisStore $store */
     protected $store;
     /** @var Factory $factory */
     protected $factory;
-
-    use RedisTrait;
     
     public function __construct(
         $host,
-        $port,
-        $dbname,
-        $user,
-        $password
+        $port
     ) {
-        $dsn = 'mysql:host=' . $host . ';port=' . $port . ';dbname=' . $dbname;
-        $this->store = new PdoStore($dsn, ['db_username' => $user, 'db_password' => $password]);
+        $dsn = 'redis://' . $host . ':' . $port;
+        $redis = self::createConnection($dsn);
+        $this->store = new RedisStore($redis);
 
         $this->factory = new Factory($this->store);
-
-// should be done manually via migrations on the prod
-//        $this->checkLockTableExists();
     }
 
     /**
-     * @return PdoStore
+     * @return RedisStore
      */
     public function getLockStorage()
     {
@@ -47,17 +40,5 @@ class LockService
     public function getLockFactory()
     {
         return $this->factory;
-    }
-
-    /**
-     * @throws \Exception
-     */
-    protected function checkLockTableExists()
-    {
-        try {
-            $this->store->createTable();
-        } catch (\PDOException $exception) {
-            throw new \Exception('Failed to instantiate lock table.');
-        }
     }
 }
