@@ -22,10 +22,18 @@ Just a one thing are necessary for this bundle works.
 composer require garlic/healthcheck
 ```
 
-####
-canfig/bundles.php - add bundle initialisation
+#### bundles.php
+config/bundles.php - add bundle initialisation
 ```bash
 Garlic\HealthCheck\HealthCheckBundle::class => ['all' => true],
+```
+
+#### redis config
+Add to your .env file next configuration values
+```bash
+REDIS_HOST=localhost
+REDIS_PORT=6379
+HEALTHCHECK_LOCK_TTL=30 - not nessessary, time in seconds until next run would be possible. Default is 30 sec
 ```
 
 ## Usage
@@ -34,12 +42,17 @@ Service automatically begin to listen enqueue events with name ```serviceDiscove
 
 Data structure could be obtained at [introspection.json](https://github.com/garlicservices/healthcheck-bundle/tree/master/Resources/query/introspection.json)
 
-### How to init event
+### How to init event from outside
 
 ```bash
 $container->get(CommunicatorService::class)
     ->serviceDiscoveryEvent(['date' => microtime(true)]);
 ```
 
+### How to send self-introspection manually
+```bash
+sf healthcheck:init
+```
+
 #### Response
-[Data structure](https://github.com/garlicservices/healthcheck-bundle/blob/master/Service/Processor/ServiceDiscoveryProcessor.php#L40) to work with
+[Data structure](https://github.com/garlicservices/healthcheck-bundle/blob/master/Service/Processor/ServiceDiscoveryProcessor.php#L39) to work with

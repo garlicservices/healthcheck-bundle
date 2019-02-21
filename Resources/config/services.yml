@@ -20,3 +20,19 @@ services:
         arguments:
             - "%env(HOST_URL)%"
             - "%env(UPLOAD_DIR)%"
+            -
+    app.servicediscovery.init:
+        class: Garlic\HealthCheck\Command\HealthCheckCommand
+        arguments:
+            - "healthcheck:init"
+            - "@kernel"
+            - "@lock.service"
+        tags:
+            - { name: 'console.command', command: 'healthcheck:init'}
+
+    lock.service:
+        class: Garlic\HealthCheck\Service\Lock\LockService
+        public: true
+        arguments:
+            - "%env(REDIS_HOST)%"
+            - "%env(REDIS_PORT)%"
