@@ -13,7 +13,7 @@ services:
             - "@router"
             - "@kernel"
         tags:
-            - { name: 'enqueue.client.processor', topicName: 'serviceDiscovery'}
+            - { name: 'enqueue.processor', topic: 'serviceDiscovery'}
 
     Garlic\Bus\Service\File\FileHandlerService:
         public: true

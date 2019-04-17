@@ -5,14 +5,14 @@ namespace Garlic\HealthCheck\Service\Processor;
 use Enqueue\Client\TopicSubscriberInterface;
 use Garlic\Bus\Service\Abstracts\ProcessorConfigAbstract;
 use Garlic\Bus\Service\CommunicatorService;
-use Interop\Queue\PsrProcessor;
-use Interop\Queue\PsrContext;
-use Interop\Queue\PsrMessage;
+use Interop\Queue\Context;
+use Interop\Queue\Message;
+use Interop\Queue\Processor;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
-class ServiceDiscoveryProcessor extends ProcessorConfigAbstract implements PsrProcessor, TopicSubscriberInterface
+class ServiceDiscoveryProcessor extends ProcessorConfigAbstract implements Processor, TopicSubscriberInterface
 {
     public static function getSubscribedTopics()
     {
@@ -21,9 +21,8 @@ class ServiceDiscoveryProcessor extends ProcessorConfigAbstract implements PsrPr
 
     /**
      * {@inheritdoc}
-     * @todo:: implement
      */
-    public function process(PsrMessage $message, PsrContext $context)
+    public function process(Message $message, Context $context)
     {
         $payload = \json_decode($message->getBody());
         $emitTime = $payload->path->date;
